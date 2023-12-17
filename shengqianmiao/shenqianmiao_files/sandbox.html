@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!-- saved from url=(0069)chrome-extension://iapifmceeokikomajpccajhjpacjmibe/html/sandbox.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><script>
+  console.log('Auto Clicker Auto Fill Sandbox initialized')
+  window.addEventListener('message', event => {
+    const { command, context, name } = event.data
+    if (command === 'eval') {
+      try {
+        // eslint-disable-next-line no-eval
+        const result = eval(context)
+        console.log('Sandbox', context, '>>', result)
+        event.source.postMessage({ name, result }, event.origin)
+      } catch (error) {
+        event.source.postMessage({ name, error }, event.origin)
+      }
+    }
+  })
+</script>
+</head><body></body></html>
