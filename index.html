@@ -140,7 +140,7 @@
                                 data-placeholder="电影、剧集、综艺、动漫"><label for="type-cupfox"><span
                                     style="color:#50616d">影视</span></label></li>
                         <li><input hidden="" type="radio" name="type" id="type-bookso"
-                                value="https://sobooks.net/search/" data-placeholder="输入书名或作者名"><label
+                                value="https://sobooks.cc/search/" data-placeholder="输入书名或作者名（下载验证码：244152）"><label
                                 for="type-bookso"><span style="color:#310f1b">图书</span></label></li>
                         <li><input hidden="" type="radio" name="type" id="type-wangpan"
                                 value="https://www.upyunso.com/search.html?page=1&keyword="
@@ -149,10 +149,10 @@
                         <!-- <li><input hidden="" type="radio" name="type" id="type-aiso" value="https://phind.com/search?q=" data-placeholder="chatGPT加持"><label for="type-aiso"><span style="color:#f1e788">AI搜索</span></label></li> -->
 
                         <li><input hidden="" type="radio"
-                                onclick="if (this.checked){window.location='https://docs.qq.com/doc/DSlJ1ZGxYeFhCZkNX'}"
+                                onclick="if (this.checked){window.location='https://wzheikfo.jutuike.cn/#/?code=WzheIkfo'}"
                                 name="type" id="type-quan"
                                 value="https://xdeafnn4.jutuike.cn/#/pages/search/search?dsSource=taobao&pub_id=37384&keywords="
-                                data-placeholder="喵糖省钱：万能省钱返利小帮手"><label for="type-quan"><span
+                                data-placeholder="喵糖省钱"><label for="type-quan"><span
                                     style="color:#f1e788">🔥福利</span></label></li>
                     </ul>
                 </div>
@@ -175,6 +175,15 @@
             // 定义要生成的数据
             const data = [
                 {
+                    title: "新鲜热门",
+                    items: [
+                        { id: "waimaishortcut", href: "https://10fen.github.io/shortcut/waimai.html", icon: "icon-weibo", text: "每日红包" },
+                        { id: "chouchou", href: "https://txstc55.github.io/ugly-avatar/", icon: "icon-douyin", text: "丑丑头像生成器" },
+                        { id: "baidu", href: "https://discuss.sci-hub.org.cn/d/2548", icon: "icon-xiaojizidian", text: "zlibrary可用网站" },
+                        { id: "douban-hot", href: "https://tophub.today/n/mDOvnyBoEB", icon: "icon-douban", text: "豆瓣新片榜" }
+                    ]
+                },
+                {
                     title: "影视娱乐",
                     items: [
                         { id: "chabeihu", href: "https://cupfox.app/", icon: "icon-hulinew", text: "茶杯狐" },
@@ -185,7 +194,7 @@
                         { id: "dianshi", href: "https://www.xuexi.cn/3271716c843e44c7e00e66e38ad6fcd5/e2c3733327a5a413f63fc980e92f4552.html", icon: "icon-dianshi", text: "电视直播" },
                         { id: "freeok", href: "https://www.freeok.vip", icon: "icon-bofang", text: "FreeOK" },
                         { id: "JOJO", href: "https://jiohub.top/", icon: "icon-jojo", text: "JOJO" },
-                        { id: "hdmoli", href: "http://www.hdmoli.com", icon: "icon-shipin", text: "hdmoli" },
+                        { id: "hdmoli", href: "https://www.hdmoli.pro/", icon: "icon-shipin", text: "hdmoli" },
                         { id: "dm5", href: "https://www.dm5.com/", icon: "icon-dongmanwu", text: "动漫屋" },
                         { id: "yinghuadongman", href: "http://www.yinghuacd.com/top/", icon: "icon-dongman", text: "樱花动漫" },
                         { id: "dilidili", href: "https://dilidili3.com/", icon: "icon-dilidili", text: "嘀哩嘀哩" },
@@ -203,9 +212,9 @@
                     title: "图书阅读",
                     items: [
                         { id: "jmsoshu", href: "https://www.jiumodiary.com/", icon: "icon-jmsoshu", text: "鸠摩搜书" },
-                        { id: "ZLibrary", href: "https://www.ooopn.com/tool/zlibrary/", icon: "icon-ZLibrary", text: "ZLibrary" },
-                        { id: "wdxsw", href: "https://sobooks.net/", icon: "icon-wdxsw", text: "我的小书屋" },
-                        { id: "baoshuwang", href: "https://www.baoshuxuan.com/", icon: "icon-baoshuwang", text: "宝书网" },
+                        { id: "ZLibrary", href: "https://discuss.sci-hub.org.cn/d/2548", icon: "icon-ZLibrary", text: "ZLibrary列表" },
+                        { id: "wdxsw", href: "https://sobooks.cc/", icon: "icon-wdxsw", text: "我的小书屋" },
+                        { id: "baoshuwang", href: "https://bun.godamh.com/", icon: "icon-baoshuwang", text: "包子漫画" },
                         { id: "weixindushu", href: "https://weread.qq.com/", icon: "icon-weixindushu", text: "微信读书" },
                         { id: "dashumanhua", href: "https://www.dashumanhua.com/", icon: "icon-dashumanhua", text: "大树漫画" },
                         { id: "manhuamao", href: "https://www.soman.com/", icon: "icon-manhuamao", text: "搜漫" },
