@@ -48,13 +48,59 @@
 <body>
     <!--视频头部背景-->
     <div class="banner-video">
-        <img src="https://gitee.com/shao_1/shortcut/raw/master/th3.jpeg"
-            loading="lazy"
+        <img data-src="https://gitee.com/shao_1/shortcut/raw/master/th3.jpeg"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" 
+        class="lazy-image"
+        loading="lazy"
             alt="" referrerpolicy="no-referrer">>
         <div class="bottom-cover"
             style="background-image: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(244 248 251 / 0.6) 50%, rgb(244 248 251) 100%);">
         </div>
     </div>
+
+
+<style>
+    /* 占位图样式 */
+    .lazy-image {
+      width: 100%;
+      height: auto;
+      background: #f0f0f0;
+      transition: opacity 0.3s;
+    }
+    
+    /* 加载完成后显示 */
+    .lazy-image.loaded {
+      opacity: 1;
+    }
+    </style>
+    
+    <script>
+    // 增强型懒加载（兼容旧浏览器）
+    document.addEventListener('DOMContentLoaded', () => {
+      const lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'));
+    
+      if ('loading' in HTMLImageElement.prototype) {
+        // 浏览器支持 loading="lazy"
+        lazyImages.forEach(img => {
+          img.src = img.dataset.src;
+          img.classList.add('loaded');
+        });
+      } else {
+        // 降级方案：Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.src = img.dataset.src;
+              img.classList.add('loaded');
+              observer.unobserve(img);
+            }
+          });
+        });
+        lazyImages.forEach(img => observer.observe(img));
+      }
+    });
+    </script>
 
 
     <!--topbar开始-->
