@@ -1798,6 +1798,11 @@
                 bgImage.style.width = '100%';
                 bgImage.style.height = 'auto';
                 bgImage.style.objectFit = 'cover';
+                
+                // 手机端优化
+                if (window.innerWidth <= 767) {
+                    bgImage.style.objectPosition = 'center top';
+                }
             } else {
                 bgImage.src = "https://gitee.com/shao_1/shortcut/raw/master/th3.jpeg";
                 bgImage.classList.add('lazy-image');
@@ -1805,6 +1810,11 @@
                 bgImage.style.width = '100%';
                 bgImage.style.height = 'auto';
                 bgImage.style.objectFit = 'cover';
+                
+                // 手机端优化
+                if (window.innerWidth <= 767) {
+                    bgImage.style.objectPosition = 'center top';
+                }
             }
         }
         
