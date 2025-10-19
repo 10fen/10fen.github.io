@@ -151,6 +151,7 @@ svg.icon { width: 1em; height: 1em; margin: 0 5px 0 8px; vertical-align: -0.15em
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 10px;
+    row-gap: 15px; /* 设置行间距 */
 }
 
 .edit-toolbar .btn {
@@ -162,6 +163,7 @@ svg.icon { width: 1em; height: 1em; margin: 0 5px 0 8px; vertical-align: -0.15em
     .edit-toolbar {
         justify-content: center;
         gap: 5px;
+        row-gap: 12px; /* 小屏幕上的行间距 */
     }
     
     .edit-toolbar .btn {
@@ -173,6 +175,10 @@ svg.icon { width: 1em; height: 1em; margin: 0 5px 0 8px; vertical-align: -0.15em
     
     /* 在非常小的屏幕上进一步优化 */
     @media screen and (max-width: 480px) {
+        .edit-toolbar {
+            row-gap: 10px; /* 更小屏幕上的行间距 */
+        }
+        
         .edit-toolbar .btn {
             padding: 3px 6px;
             font-size: 11px;

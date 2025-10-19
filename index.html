@@ -17,22 +17,74 @@
     <!--QQ强制全屏-->
     <meta name="x5-page-mode" content="app">
     <!--QQ应用模式-->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" async
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-         -->
+    <!-- 预加载关键资源 -->
+    <link rel="preload" as="image" href="https://gitee.com/shao_1/shortcut/raw/master/th3.jpeg">
     
-        <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"  integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" id="font-awesome-css"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css?ver=1.1422" async
-        type="text/css" media="all"> -->
+    <!-- 关键CSS内联 -->
+    <style>
+        /* 关键样式内联 */
+        body{ font-size: 14px; background: #f4f8fb; overflow-x:hidden; }
+        a{text-decoration: none;}
+        a:hover{text-decoration: none;}
+        svg.icon { width: 1em; height: 1em; margin: 0 5px 0 8px; vertical-align: -0.15em; fill: currentColor; overflow: hidden;}
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+        
+        /*menu*/
+        .navbar-light .navbar-nav .nav-link{ color: #fff; }
+        .navbar-light .navbar-nav .active .nav-link{ color: #fff; }
+        .navbar-light .navbar-nav .nav-link:hover{ color: #fff; }
+        
+        /* --- search --- */
+        #search{width:100%;margin:0; padding: 0 0 10px; position: relative; z-index: 2000;  border-radius: 5px;}
+        #search form{position:relative}
+        #search-text{width:100%;height:50px; line-height: 50px; text-indent: 10px; font-size:16px;border-radius:5px;background-color:#fff; border:none; box-shadow: 0 0.5rem 0.625rem #d4d4d44d;transition: 0.3s all linear; padding-right: 50px; box-sizing: border-box; position: relative; z-index: 5;}
+        #search-text:focus{background: #fff; box-shadow: 0 0px 24px 0 rgba(50, 50, 50, 0.08); border-color: #fff; }
+        #search button{position:absolute;top:0;right:0;background:#fff;border:0;width:50px;height:50px;margin:0; outline: none; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 0 5px 5px 0; z-index: 10; box-shadow: none;}
+        #search button:hover{cursor:pointer}
+        #search button svg{color:#29f;font-size:20px; width: 20px; height: 20px; margin: 0;}
+        
+        .banner-video {
+            position: absolute;
+            width: 100%;
+            overflow: hidden;
+            left: 0; top:0;
+            max-height: 750px;
+        }
+        .banner-video video{
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .banner-video img{
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .bottom-cover{ width: 100%; height: 50%; position: absolute; bottom:0px; z-index: 10; }
+        
+        @media screen and (max-width: 992px){
+            #he-plugin-simple{ display: none !important; }
+            div#navbarsExample05 { background: rgba(0, 0, 0, 0.8); padding: 10px 30px; border-radius: 20px;}
+        }
+    </style>
+    
+    <!-- 非关键CSS异步加载 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"  integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
+    
     <!-- app图标 -->
     <script src="https://at.alicdn.com/t/c/font_3778090_tmyugzygmyj.js"></script>
     <!-- 引入jQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" defer></script>
     <!-- 引入Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script src="sou.js"></script>
-        <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous" defer></script>
+    <script src="sou.js" defer></script>
     <script>
         // 确保图标库加载完成后渲染SVG
         function initIconSupport() {
@@ -68,8 +120,17 @@
         }
         initIconSupport();
     </script>
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <script>
+        // 异步加载不蒜子统计
+        (function() {
+            var script = document.createElement('script');
+            script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+            script.async = true;
+            document.head.appendChild(script);
+        })();
+    </script>
     <script type="text/javascript">
+        // 异步加载Clarity
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -202,6 +263,47 @@
         lazyImages.forEach(img => observer.observe(img));
       }
     });
+    
+    // 图片压缩函数
+    function compressImage(file, callback) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = function() {
+        // 设置最大尺寸
+        const maxWidth = 1920;
+        const maxHeight = 1080;
+        let width = img.width;
+        let height = img.height;
+        
+        // 按比例缩放
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // 绘制缩放后的图片
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // 转换为Blob并返回
+        canvas.toBlob(function(blob) {
+          callback(blob);
+        }, 'image/jpeg', 0.8); // 80%质量
+      };
+      
+      img.src = URL.createObjectURL(file);
+    }
     </script>
 
 
@@ -273,7 +375,7 @@
         </div>
     </nav>
     <!-- 引入SortableJS -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" defer></script>
     <!--topbar结束-->
     <div class="container" style="margin-top: 100px; position: relative; z-index: 100;">
         <!--搜索开始-->
@@ -305,7 +407,7 @@
                                 name="type" id="type-quan"
                                 value="https://xdeafnn4.jutuike.cn/#/pages/search/search?dsSource=taobao&pub_id=37384&keywords="
                                 data-placeholder="外卖霸王餐"><label for="type-quan"><span
-                                    style="color:#000000;">🔥霸王餐</span></label></li>
+                                    style="color:#000000;">霸王餐</span></label></li>
                     </ul>
                 </div>
             </div>
@@ -327,11 +429,11 @@
         
         <!-- 编辑模式工具栏 -->
         <div id="edit-toolbar" class="edit-toolbar" style="display: none; margin-bottom: 20px;">
-            <button id="add-site-btn" class="btn btn-primary mr-2">添加网站</button>
-            <button id="export-config-btn" class="btn btn-success mr-2">导出配置</button>
-            <button id="import-config-btn" class="btn btn-info mr-2">导入配置</button>
-            <button id="change-bg-btn" class="btn btn-warning mr-2">修改背景</button>
-            <button id="reset-default-btn" class="btn btn-danger mr-2">恢复默认</button>
+            <button id="add-site-btn" class="btn btn-primary">添加网站</button>
+            <button id="export-config-btn" class="btn btn-success">导出配置</button>
+            <button id="import-config-btn" class="btn btn-info">导入配置</button>
+            <button id="change-bg-btn" class="btn btn-warning">修改背景</button>
+            <button id="reset-default-btn" class="btn btn-danger">恢复默认</button>
             <button id="done-edit-btn" class="btn btn-secondary">完成</button>
         </div>
         
@@ -1125,7 +1227,7 @@
             }
         }
         
-        // 渲染网站函数
+        // 渲染网站函数 - 优化版本
         function renderSites() {
             console.log('开始渲染网站');
             // 获取存储的数据
@@ -1133,18 +1235,8 @@
             console.log('存储的数据:', storedData);
             if (!storedData) return;
             
-            // 调试：检查自定义网站数据
-            console.log('自定义网站数据:', storedData.customSites);
-            // 检查特定网站的图标数据
-            for (const category in storedData.customSites) {
-                storedData.customSites[category].forEach(item => {
-                    console.log('网站项目:', item.id, '图标:', item.icon);
-                });
-            }
-            
             // 合并默认数据和自定义数据
-            console.log('原始data:', data);
-            // 合并具有相同标题的类别，避免重复类别
+            // 使用更高效的合并方式
             const mergedData = [];
             const categoryMap = new Map();
             
@@ -1160,18 +1252,11 @@
                 }
             });
             
-            console.log('处理后的mergedData:', mergedData);
-            
             // 添加自定义类别
             for (const category in storedData.customSites) {
-                console.log('处理自定义类别:', category);
-                console.log('自定义类别数据:', storedData.customSites[category]);
                 const existingCategoryIndex = mergedData.findIndex(item => item.title === category);
-                console.log('existingCategoryIndex:', existingCategoryIndex);
                 if (existingCategoryIndex !== -1) {
                     // 合并到现有类别
-                    console.log('合并到现有类别:', mergedData[existingCategoryIndex].title);
-                    console.log('合并前items:', mergedData[existingCategoryIndex].items);
                     // 使用Set来避免重复项
                     const existingIds = new Set(mergedData[existingCategoryIndex].items.map(item => item.id));
                     const uniqueCustomSites = storedData.customSites[category].filter(item => !existingIds.has(item.id));
@@ -1179,10 +1264,8 @@
                         ...mergedData[existingCategoryIndex].items,
                         ...uniqueCustomSites
                     ];
-                    console.log('合并后items:', mergedData[existingCategoryIndex].items);
                 } else {
                     // 添加新类别
-                    console.log('添加新类别:', category);
                     mergedData.push({
                         title: category,
                         items: [...storedData.customSites[category]]
@@ -1190,85 +1273,74 @@
                 }
             }
             
-            // 调试：检查合并后的数据
-            console.log('合并后的数据:', mergedData);
-            
-            // 检查特定网站的图标数据
-            mergedData.forEach(section => {
-                section.items.forEach(item => {
-                    console.log('渲染前检查 - 网站项目:', item.id, '图标:', item.icon);
-                });
-            });
-            
             // 过滤被删除的网站
-            console.log('过滤前的mergedData:', mergedData);
             mergedData.forEach(section => {
                 section.items = section.items.filter(item => !storedData.deletedSites.includes(item.id));
             });
-            console.log('过滤后的mergedData:', mergedData);
             
             // 应用排序
-            console.log('排序前的mergedData:', mergedData);
             mergedData.forEach(section => {
                 if (storedData.siteOrder[section.title]) {
                     // 按照存储的顺序重新排序
-                    console.log('排序前的section items:', section.title, section.items);
                     section.items.sort((a, b) => {
                         const indexA = storedData.siteOrder[section.title].indexOf(a.id);
                         const indexB = storedData.siteOrder[section.title].indexOf(b.id);
                         return indexA - indexB;
                     });
-                    console.log('排序后的section items:', section.title, section.items);
                 }
             });
-            console.log('排序后的mergedData:', mergedData);
             
-            // 生成HTML代码
-            let html = "";
-
+            // 生成HTML代码 - 使用文档片段减少DOM操作
+            const fragment = document.createDocumentFragment();
+            
             for (const section of mergedData) {
-                html += `
-              <ul class="mylist row">
-                <li class="title"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hua"></use></svg>${section.title}</li>`;
-
+                const ul = document.createElement('ul');
+                ul.className = 'mylist row';
+                
+                const liTitle = document.createElement('li');
+                liTitle.className = 'title';
+                liTitle.innerHTML = `<svg class="icon" aria-hidden="true"><use xlink:href="#icon-hua"></use></svg>${section.title}`;
+                ul.appendChild(liTitle);
+                
                 for (const item of section.items) {
                     // 为折扣话费特殊处理，跳转到专门页面
                     const isHuafei = item.id === 'huafei';
                     const href = isHuafei ? 'huafei.html' : item.href;
-                    html += `
-                <li class="col-3 col-sm-3 col-md-3 col-lg-1" id="${item.id}">
-                  <a rel="nofollow" href="${href}" target="_blank">`;
-                  if (item.icon && typeof item.icon === 'string' && item.icon.startsWith('text:')) {
-                    // 文字图标
-                    const text = item.icon.substring(5);
-                    html += `
-                    <div style="width: 45px; height: 45px; border-radius: 10px; background: #1890ff; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: bold; font-size: 20px;">${text}</div>`;
-                  } else if (item.icon && typeof item.icon === 'string' && (item.icon.startsWith('http://') || item.icon.startsWith('https://'))) {
-                    // 直接链接的图片图标
-                    html += `
-                    <img src="${item.icon}" alt="${item.text}">`;
-                  } else {
-                    // 默认SVG图标
-                    const iconId = item.icon || 'icon-hua';
-                    html += `
-                    <svg class="icon" aria-hidden="true"><use xlink:href="#${iconId}"></use></svg>`;
-                  }
-                  
-                  html += `
-                    <span>${item.text}</span>
-                  </a>
-                </li>`;
+                    
+                    const li = document.createElement('li');
+                    li.className = 'col-3 col-sm-3 col-md-3 col-lg-1';
+                    li.id = item.id;
+                    
+                    let iconHtml = '';
+                    if (item.icon && typeof item.icon === 'string' && item.icon.startsWith('text:')) {
+                        // 文字图标
+                        const text = item.icon.substring(5);
+                        iconHtml = `<div style="width: 45px; height: 45px; border-radius: 10px; background: #1890ff; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: bold; font-size: 20px;">${text}</div>`;
+                    } else if (item.icon && typeof item.icon === 'string' && (item.icon.startsWith('http://') || item.icon.startsWith('https://'))) {
+                        // 直接链接的图片图标
+                        iconHtml = `<img src="${item.icon}" alt="${item.text}">`;
+                    } else {
+                        // 默认SVG图标
+                        const iconId = item.icon || 'icon-hua';
+                        iconHtml = `<svg class="icon" aria-hidden="true"><use xlink:href="#${iconId}"></use></svg>`;
+                    }
+                    
+                    li.innerHTML = `
+                        <a rel="nofollow" href="${href}" target="_blank">
+                            ${iconHtml}
+                            <span>${item.text}</span>
+                        </a>
+                    `;
+                    ul.appendChild(li);
                 }
-
-                html += `
-              </ul>`;
+                
+                fragment.appendChild(ul);
             }
             
-            console.log('生成的HTML:', html);
-
             // 将生成的HTML代码插入到页面中的容器元素中
             const container = document.getElementById("container");
-            container.innerHTML = html;
+            container.innerHTML = ''; // 清空现有内容
+            container.appendChild(fragment); // 添加新内容
             
             // 如果在编辑模式下，需要重新添加编辑按钮
             if (isEditMode) {
@@ -1667,24 +1739,44 @@
             }
         }
         
-        // 修改背景图功能
+        // 修改背景图功能，添加压缩
         function changeBackgroundImage(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    // 将背景图保存到localStorage
-                    localStorage.setItem('customBackgroundImage', e.target.result);
-                    
-                    // 更新页面背景图
-                    updateBackgroundImage();
-                    
-                    alert('背景图已更新');
-                } catch (error) {
-                    console.error('更新背景图时出错:', error);
-                    alert('更新背景图时出错: ' + error.message);
-                }
-            };
-            reader.readAsDataURL(file);
+            // 检查文件大小
+            if (file.size > 2 * 1024 * 1024) { // 2MB
+                // 压缩图片
+                compressImage(file, function(compressedBlob) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            // 将背景图保存到localStorage
+                            localStorage.setItem('customBackgroundImage', e.target.result);
+                            
+                            // 更新页面背景图
+                            updateBackgroundImage();
+                            
+                            alert('背景图已更新（已自动压缩）');
+                        } catch (error) {
+                            console.error('更新背景图时出错:', error);
+                            alert('更新背景图时出错: ' + error.message);
+                        }
+                    };
+                    reader.readAsDataURL(compressedBlob);
+                });
+            } else {
+                // 文件大小合适，直接处理
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        localStorage.setItem('customBackgroundImage', e.target.result);
+                        updateBackgroundImage();
+                        alert('背景图已更新');
+                    } catch (error) {
+                        console.error('更新背景图时出错:', error);
+                        alert('更新背景图时出错: ' + error.message);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
         }
         
         // 更新页面背景图
