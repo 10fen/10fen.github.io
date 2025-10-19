@@ -1386,6 +1386,9 @@
         
         // 页面加载完成后绑定事件
         document.addEventListener('DOMContentLoaded', function() {
+            // 更新背景图显示
+            updateBackgroundImage();
+            
             // 初始渲染页面
             renderSites();
             
@@ -1794,9 +1797,14 @@
                 bgImage.classList.add('loaded'); // 立即显示，不需要懒加载
                 bgImage.style.width = '100%';
                 bgImage.style.height = 'auto';
+                bgImage.style.objectFit = 'cover';
             } else {
-                bgImage.setAttribute('data-src', "https://gitee.com/shao_1/shortcut/raw/master/th3.jpeg");
-                bgImage.style.width = '';
+                bgImage.src = "https://gitee.com/shao_1/shortcut/raw/master/th3.jpeg";
+                bgImage.classList.add('lazy-image');
+                bgImage.classList.add('loaded');
+                bgImage.style.width = '100%';
+                bgImage.style.height = 'auto';
+                bgImage.style.objectFit = 'cover';
             }
         }
         
