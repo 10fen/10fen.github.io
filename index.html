@@ -175,23 +175,41 @@
             img.parentNode.replaceChild(svg, img);
         }
 
-        // 为所有 favicon 图片绑定超时和错误回退（可在每次 renderSites 后调用）
+        // 后台试探加载 favicon，1.5s 内成功才设置 src，超时直接回退 iconfont
+        // 避免浏览器直接创建 60+ 个 favicon.ico 请求卡住 loading 转圈
         function bindFaviconFallback() {
             document.querySelectorAll('img.site-favicon').forEach(function(img) {
                 if (img.dataset.fbBound) return;
                 img.dataset.fbBound = '1';
-                img.addEventListener('error', function() {
+
+                var src = img.getAttribute('data-src');
+                if (!src) {
                     handleFaviconFallback(img);
-                });
-                img.addEventListener('load', function() {
+                    return;
+                }
+
+                var done = false;
+                var probe = new Image();
+
+                var fallback = function() {
+                    if (done) return;
+                    done = true;
+                    probe.src = ''; // 取消请求
+                    handleFaviconFallback(img);
+                };
+
+                probe.onload = function() {
+                    if (done) return;
+                    done = true;
                     if (img._fbTimer) clearTimeout(img._fbTimer);
-                });
-                // 1.5秒超时后立刻回退，避免卡很久
-                img._fbTimer = setTimeout(function() {
-                    if (!img.complete || !img.naturalWidth) {
-                        handleFaviconFallback(img);
-                    }
-                }, 1500);
+                    img.src = src; // 确认可用，设置 src 显示
+                };
+                probe.onerror = fallback;
+
+                // 1.5s 超时
+                img._fbTimer = setTimeout(fallback, 1500);
+
+                probe.src = src; // 后台发起请求
             });
         }
 
@@ -212,7 +230,6 @@
                     });
                 });
             });
-            // DOMContentLoaded 后开始观察
             document.addEventListener('DOMContentLoaded', function() {
                 observer.observe(document.getElementById('container'), { childList: true, subtree: true });
             });
@@ -1352,10 +1369,10 @@
                         const text = item.icon.substring(5);
                         iconHtml = `<div style="width: 45px; height: 45px; border-radius: 10px; background: #1890ff; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: bold; font-size: 20px;">${text}</div>`;
                     } else {
-                        // 优先用站点自身 favicon，超时或失败回退 iconfont
+                        // 延迟加载 favicon：用 data-src 避免浏览器立即发起请求卡住 loading 状态
                         try {
                             const domain = new URL(item.href).hostname;
-                            iconHtml = `<img class="site-favicon" src="https://${domain}/favicon.ico" alt="${item.text}" data-fallback="${item.icon || 'icon-hua'}">`;
+                            iconHtml = `<img class="site-favicon" data-src="https://${domain}/favicon.ico" alt="${item.text}" data-fallback="${item.icon || 'icon-hua'}">`;
                         } catch (e) {
                             const iconId = item.icon || 'icon-hua';
                             iconHtml = `<svg class="icon" aria-hidden="true"><use xlink:href="#${iconId}"></use></svg>`;
