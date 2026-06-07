@@ -72,11 +72,31 @@
             #he-plugin-simple{ display: none !important; }
             div#navbarsExample05 { background: rgba(0, 0, 0, 0.8); padding: 10px 30px; border-radius: 20px;}
         }
+
+        /* 导航列表关键布局 - 防止FOUC */
+        .mylist{list-style:none;padding:10px 20px;position:relative;z-index:1000;margin:20px 0;border-radius:15px;background:#fff;box-shadow:0 0.5rem 0.625rem #d4d4d44d}
+        .mylist li.col-3{width:100px;transition:0.3s all linear;font-size:14px;overflow:hidden;padding:10px 0;border-radius:10px}
+        .mylist li.col-3 svg,.mylist li.col-3 .icon{display:block;width:45px;height:45px;padding:8px;background:#fff;border:1px solid #eee;border-radius:10px;margin:0 auto}
+        .mylist li.col-3 img{display:block;width:45px;height:45px;padding:8px;background:#fff;border:1px solid #eee;border-radius:10px;margin:0 auto;object-fit:contain}
+        .mylist li.col-3 span{width:100%;display:block;height:26px;line-height:26px;text-align:center;font-size:13px}
+        .mylist li.title{width:100%;min-width:auto;margin:0;height:35px;font-size:16px;line-height:33px;padding:0 20px 0 10px;border-bottom:1px solid #eee;margin-bottom:10px}
+
+        /* 占位图 */
+        .lazy-image{width:100%;height:auto;background:#f0f0f0;transition:opacity 0.3s}
+        .lazy-image.loaded{opacity:1}
+
+        /* topbar */
+        .navbar-toggler svg{width:24px;height:24px}
+        .navbar-toggler .bi-list-nested{display:none}
+        .navbar-toggler.collapsed .bi-list-nested{display:block}
+        .navbar-toggler.collapsed .bi-x{display:none}
+        .navbar-toggler .bi-x{display:block}
+        #he-plugin-simple{z-index:1000}
     </style>
     
     <!-- 非关键CSS异步加载 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="style.css">
     
     <!-- app图标 -->
     <script src="https://at.alicdn.com/t/c/font_3778090_tmyugzygmyj.js"></script>
@@ -140,6 +160,20 @@
     
     <!-- 数据存储和初始化功能 -->
     <script>
+        // 图标加载失败或超时，回退到 iconfont
+        function handleFaviconFallback(img) {
+            if (!img.parentNode || img.dataset.fallbackDone) return;
+            img.dataset.fallbackDone = '1';
+            var fb = img.getAttribute('data-fallback') || 'icon-hua';
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'icon');
+            svg.setAttribute('aria-hidden', 'true');
+            var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+            use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + fb);
+            svg.appendChild(use);
+            img.parentNode.replaceChild(svg, img);
+        }
+        
         // 定义数据结构
         const DEFAULT_STORAGE_KEY = 'fenNavigationData';
         let isEditMode = false; // 编辑模式状态
@@ -222,21 +256,6 @@
     </div>
 
 
-<style>
-    /* 占位图样式 */
-    .lazy-image {
-      width: 100%;
-      height: auto;
-      background: #f0f0f0;
-      transition: opacity 0.3s;
-    }
-    
-    /* 加载完成后显示 */
-    .lazy-image.loaded {
-      opacity: 1;
-    }
-    </style>
-    
     <script>
     // 增强型懒加载（兼容旧浏览器）
     document.addEventListener('DOMContentLoaded', () => {
@@ -308,28 +327,6 @@
 
 
     <!--topbar开始-->
-    <style>
-        .navbar-toggler svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .navbar-toggler .bi-list-nested {
-            display: none;
-        }
-
-        .navbar-toggler.collapsed .bi-list-nested {
-            display: block;
-        }
-
-        .navbar-toggler.collapsed .bi-x {
-            display: none;
-        }
-
-        .navbar-toggler .bi-x {
-            display: block;
-        }
-    </style>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: absolute; z-index: 10000;">
         <a class="navbar-brand" id="manghelucky" style="color:#fff;font-size:15px;" href="#" 
             onclick=" urlList=['https://yanhua.netlify.app/','https://ilove.works','https://liferestart.syaro.io/public/index.html','https://www.bilibili.com/video/BV1m4411b7fb','https://ac.yunyoujun.cn','https://juhaodong.github.io/CaiHongPi/','https://saythemoney.github.io','https://dujitang.netlify.app','http://www.ipanda.com/zb/index.shtml?guid=xiongmao03&url=xiongmao03&image=//p1.img.cctvpic.com/uploadimg/2018/04/28/1524908553796421.jpg&id=2&title=幼年园A-成都大熊猫繁育研究基地_熊猫频道','https://pointerpointer.com'];  window.open(urlList[Math.floor(Math.random()*urlList.length)],'_blank');"
@@ -341,11 +338,6 @@
         <button id="settings-btn" class="btn btn-sm ml-auto mr-3" style="color: white; background: transparent;">我要自定义</button>
         
         <div class="collapse navbar-collapse" id="navbarsExample05">
-            <style>
-                #he-plugin-simple {
-                    z-index: 1000;
-                }
-            </style>
             <div id="he-plugin-simple"></div>
             <script>
                 WIDGET = {
@@ -514,8 +506,8 @@
                         { id: "ddys", href: "https://ddys.tv/", icon: "icon-ddys", text: "低端影视" },
                         { id: "netflix", href: "https://www.nfyingshi.com/", icon: "icon-netflix", text: "奈非影视" },
                         { id: "dianshi", href: "https://www.xuexi.cn/3271716c843e44c7e00e66e38ad6fcd5/e2c3733327a5a413f63fc980e92f4552.html", icon: "icon-dianshi", text: "电视直播" },
-                        { id: "freeok", href: "https://freeok.zip/", icon: "icon-bofang", text: "FreeOK" },
-                        { id: "JOJO", href: "https://gaze.run/", icon: "icon-jojo", text: "注视影音" },
+                        { id: "freeok", href: "https://freeokk.me/index.php/label/hot.html", icon: "icon-bofang", text: "FreeOK" },
+                        { id: "JOJO", href: "https://juok3.top/", icon: "icon-jojo", text: "注视影音" },
                         { id: "chabeihu", href: "https://www.hanjukankan.com/", icon: "icon-hulinew", text: "韩剧库" },
                         { id: "hdmoli", href: "https://www.hdmoli.pro/", icon: "icon-shipin", text: "hdmoli" },
                         { id: "dm5", href: "https://www.dm5.com/", icon: "icon-dongmanwu", text: "动漫屋" },
@@ -1313,16 +1305,18 @@
                     
                     let iconHtml = '';
                     if (item.icon && typeof item.icon === 'string' && item.icon.startsWith('text:')) {
-                        // 文字图标
+                        // 文字图标（自定义站点）
                         const text = item.icon.substring(5);
                         iconHtml = `<div style="width: 45px; height: 45px; border-radius: 10px; background: #1890ff; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: bold; font-size: 20px;">${text}</div>`;
-                    } else if (item.icon && typeof item.icon === 'string' && (item.icon.startsWith('http://') || item.icon.startsWith('https://'))) {
-                        // 直接链接的图片图标
-                        iconHtml = `<img src="${item.icon}" alt="${item.text}">`;
                     } else {
-                        // 默认SVG图标
-                        const iconId = item.icon || 'icon-hua';
-                        iconHtml = `<svg class="icon" aria-hidden="true"><use xlink:href="#${iconId}"></use></svg>`;
+                        // 优先用站点自身 favicon，超时或失败回退 iconfont
+                        try {
+                            const domain = new URL(item.href).hostname;
+                            iconHtml = `<img class="site-favicon" src="https://${domain}/favicon.ico" alt="${item.text}" data-fallback="${item.icon || 'icon-hua'}">`;
+                        } catch (e) {
+                            const iconId = item.icon || 'icon-hua';
+                            iconHtml = `<svg class="icon" aria-hidden="true"><use xlink:href="#${iconId}"></use></svg>`;
+                        }
                     }
                     
                     li.innerHTML = `
@@ -1391,6 +1385,24 @@
             
             // 初始渲染页面
             renderSites();
+            
+            // 为所有 favicon 图片绑定错误处理和超时机制
+            document.querySelectorAll('img.site-favicon').forEach(function(img) {
+                // 加载失败 → 回退 iconfont
+                img.addEventListener('error', function() {
+                    handleFaviconFallback(img);
+                });
+                // 加载成功 → 取消超时
+                img.addEventListener('load', function() {
+                    clearTimeout(img._fbTimer);
+                });
+                // 1.5 秒超时：加载太慢也回退
+                img._fbTimer = setTimeout(function() {
+                    if (!img.complete || !img.naturalWidth) {
+                        handleFaviconFallback(img);
+                    }
+                }, 1500);
+            });
             
             // 添加图标显示检查
             setTimeout(function() {
@@ -1818,12 +1830,7 @@
             }
         }
         
-        },
-        
-        
-        // 页面加载完成后为折扣话费图标添加点击事件
-        document.addEventListener('DOMContentLoaded', function() {
-            }));
+        });
     </script>
 </body>
 </html>

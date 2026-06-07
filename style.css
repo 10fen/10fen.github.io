@@ -63,7 +63,7 @@ svg.icon { width: 1em; height: 1em; margin: 0 5px 0 8px; vertical-align: -0.15em
 .mylist{list-style: none; padding:10px 20px; position: relative; z-index: 1000; margin: 20px 0; border-radius: 15px; background: #fff; box-shadow: 0 0.5rem 0.625rem #d4d4d44d}
 .mylist li.col-3{ width: 100px; transition: 0.3s all linear; font-size: 14px; overflow: hidden; padding:10px 0; border-radius: 10px;}
 .mylist li.col-3 svg, .mylist li.col-3 .icon { display: block; width: 45px; height: 45px; padding: 8px; background: #fff; border: 1px solid #eee; border-radius:10px; margin: 0 auto; }
-.mylist li.col-3 img{ display: block; width: 45px; height: 45px; padding: 8px; background: #fff;border: 1px solid #eee;  border-radius:10px; margin: 0 auto; object-fit: contain; }
+.mylist li.col-3 img{ display: block; width: 45px; height: 45px; padding: 8px; background: #f5f5f5;border: 1px solid #eee;  border-radius:10px; margin: 0 auto; object-fit: contain; }
 .mylist li.col-3:hover{ background: #eee; }
 .mylist li.col-3 span{ width: 100%; display: block; height: 26px; line-height: 26px; text-align:center; font-size: 13px; }
 
@@ -313,4 +313,3 @@ svg.icon { width: 1em; height: 1em; margin: 0 5px 0 8px; vertical-align: -0.15em
 .modal-open {
     overflow: hidden;
 }
-
