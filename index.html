@@ -98,8 +98,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="style.css">
     
-    <!-- app图标 -->
-    <script src="https://at.alicdn.com/t/c/font_3778090_tmyugzygmyj.js"></script>
+    <!-- app图标 - 预加载 + 异步加载，避免阻塞页面渲染 -->
+    <link rel="preload" href="https://at.alicdn.com/t/c/font_3778090_tmyugzygmyj.js" as="script">
+    <script src="https://at.alicdn.com/t/c/font_3778090_tmyugzygmyj.js" defer></script>
     <!-- 引入jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
     <!-- 引入Bootstrap JS -->
@@ -173,6 +174,49 @@
             svg.appendChild(use);
             img.parentNode.replaceChild(svg, img);
         }
+
+        // 为所有 favicon 图片绑定超时和错误回退（可在每次 renderSites 后调用）
+        function bindFaviconFallback() {
+            document.querySelectorAll('img.site-favicon').forEach(function(img) {
+                if (img.dataset.fbBound) return;
+                img.dataset.fbBound = '1';
+                img.addEventListener('error', function() {
+                    handleFaviconFallback(img);
+                });
+                img.addEventListener('load', function() {
+                    if (img._fbTimer) clearTimeout(img._fbTimer);
+                });
+                // 1.5秒超时后立刻回退，避免卡很久
+                img._fbTimer = setTimeout(function() {
+                    if (!img.complete || !img.naturalWidth) {
+                        handleFaviconFallback(img);
+                    }
+                }, 1500);
+            });
+        }
+
+        // MutationObserver 安全网：捕获未来任何动态添加的 favicon 图片
+        (function() {
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1) {
+                            if (node.classList && node.classList.contains('site-favicon')) {
+                                bindFaviconFallback();
+                            }
+                            if (node.querySelectorAll) {
+                                var imgs = node.querySelectorAll('img.site-favicon');
+                                if (imgs.length > 0) bindFaviconFallback();
+                            }
+                        }
+                    });
+                });
+            });
+            // DOMContentLoaded 后开始观察
+            document.addEventListener('DOMContentLoaded', function() {
+                observer.observe(document.getElementById('container'), { childList: true, subtree: true });
+            });
+        })();
         
         // 定义数据结构
         const DEFAULT_STORAGE_KEY = 'fenNavigationData';
@@ -1340,8 +1384,11 @@
                 updateEditButtons();
                 initSortable(); // 重新初始化拖拽功能
             }
+
+            // 为新渲染的 favicon 图片绑定超时回退
+            bindFaviconFallback();
         }
-        
+
         // 检查和修复图标显示
         function checkAndFixIcons() {
             // 检查页面中所有SVG图标
@@ -1382,27 +1429,9 @@
             // 更新背景图显示
             updateBackgroundImage();
             
-            // 初始渲染页面
+            // 初始渲染页面（内部已绑定 favicon 超时回退）
             renderSites();
-            
-            // 为所有 favicon 图片绑定错误处理和超时机制
-            document.querySelectorAll('img.site-favicon').forEach(function(img) {
-                // 加载失败 → 回退 iconfont
-                img.addEventListener('error', function() {
-                    handleFaviconFallback(img);
-                });
-                // 加载成功 → 取消超时
-                img.addEventListener('load', function() {
-                    clearTimeout(img._fbTimer);
-                });
-                // 1.5 秒超时：加载太慢也回退
-                img._fbTimer = setTimeout(function() {
-                    if (!img.complete || !img.naturalWidth) {
-                        handleFaviconFallback(img);
-                    }
-                }, 1500);
-            });
-            
+
             // 添加图标显示检查
             setTimeout(function() {
                 checkAndFixIcons();
