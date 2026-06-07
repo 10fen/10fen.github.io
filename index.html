@@ -1445,9 +1445,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 更新背景图显示
             updateBackgroundImage();
-            
-            // 初始渲染页面（内部已绑定 favicon 超时回退）
-            renderSites();
 
             // 添加图标显示检查
             setTimeout(function() {
@@ -1876,6 +1873,11 @@
         }
         
         });
+
+        // 不等待 DOMContentLoaded，立即渲染页面，避免白屏
+        initializeStorage();
+        renderSites();
+
     </script>
 </body>
 </html>
